@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Trivial Pursuit	</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body style="background-image:url(https://image.freepik.com/free-vector/abstract-blue-background_1048-1511.jpg)">
+
+<div class="container jumbotron">
+	<div class="row">
+		<div class="col-md-12">
+			<h1 style="text-align: center; margin-top: -15px;">TRIVIA</h1>
+			<p style="text-align: center;"> <span class="btn btn-default btn-success"> Game Start! </span>
+			</p>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="container panel panel-body">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center">
+		<div id="questionRow"> Question goes here: </div>
+			<div class="answersRow">
+				<div id="answersRow1"> Answer goes here </div>
+				<div id="answersRow2"> Answer goes here </div>
+				<div id="answersRow3"> Answer goes here </div>
+				<div id="answersRow4"> Answer goes here </div>
+			</div>
+		<p>timer </p> <span id="logout-timer"></span>
+		<div id="timerRow">  </div>
+		<div id="checkboxRow"> Checkbox appends here!</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+ <script type="text/javascript">
+
+ 	var questions = ["", "", "", "", "", "", "", "", "", "", "", "", "", "",]
+	var correctResponse = ["", "", "", "", "", "", "", "", "", "", "", "", "", "",]
+	var wrongAnswer1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "",]
+	var wrongAnswer2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "",]
+	var wrongAnswer3 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "",]
+	
+
+var timer = $("#timerRow")
+
+//LOGIC:
+// Alert: Do you want to play a game? If yes, game start, if no, another popup 
+// On game start.. TIMER needs to begin. 30 seconds. A random question from the array (or maybe object?) appears.
+// need 4 arrays for the answers. One for the correct one, 3 for wrong ones that line up similarly to the correct response. 
+// if userclick === response from correct array, checkbox with a ding
+// else, x box and an error sound.
+
+
+//timer
+//Variable showQuestion will hold the setInterval when we start the slideshow/1st question. This is the first step to create a timer.
+
+var showQuestion;
+// Count will keep track of the index of the currently displaying question.
+var count = 0;
+
+//this is where the timer starts. Will need to decrement.
+var countdown = 30
+//want to make something that displays this countdown
+function displayTimer(){
+timer.html(countdown--);
+}
+
+function interval (){
+	setInterval(displayTimer, 1000);
+	//this shows the timer for every second
+	showQuestion = setInterval(nextQuestion, 30000);
+	//nextQuestion is going to be a new function, and this interval is going to be 30 seconds. HOWEVER, on a button select, it will skip the rest of the time and reset the timer. 
+
+}
+	
+
+		function nextQuestion(){
+			gameStart.on("click", function(){
+			count++;
+			countdown = 30;
+			var arr = [1,2,3,4];
+			var randomIndexNumber = Math.floor(Math.random() * questions.length)
+			var randomAnswerRow = Math.ceil(Math.random() * array.length);
+			// get rid of old number from arr, get new random between 1
+			$('#questionRow').html(questions[randomIndexNumber])
+			$('#answersRow1').html(correctResponse[randomIndexNumber])
+			$('#answersRow2').html(wrongAnswer1[randomIndexNumber])
+			$('#answersRow3').html(wrongAnswer2[randomIndexNumber])
+			$('#answersRow4').html(wrongAnswer3[randomIndexNumber])
+		}
+
+
+
+
+interval()
+
+
+
+
+
+
+ function gameStart(){
+	$('.btn-success').on("click", function(){
+
+
+
+
+
+
+//function gameStart(){
+	//somebutton .on("click", function){
+	//for (var i = 0; i < questions.length; i++){
+	//	$("#questionRow").html(question[i])
+	//	}
+	//}
+//}
+
+// gamestart function should load up the first (potentially random) question
+
+
+//timer: 30 seconds, should go to the next question unless an answer button is clicked. 
+//when the answer button is clicked, it should load up the next question with the new set of answers
+
+</script>
+
+
+
+<!-- <div class="container">
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+</div>
+ -->
+
+
+</body>
+</html>

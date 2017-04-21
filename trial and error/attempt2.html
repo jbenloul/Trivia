@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Trivial Pursuit </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body style="background-image:url(https://image.freepik.com/free-vector/abstract-blue-background_1048-1511.jpg)">
+    <div class="container jumbotron">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="text-align: center; margin-top: -15px;">TRIVIA</h1>
+                <p style="text-align: center;"> <span class="btn btn-default btn-success" id="gameStart"> Game Start! </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container panel panel-body">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <div id="questionRow">
+                    <button type="button" class="btn btn-block btn-primary" style="pointer-events: none; padding: 25px; margin-bottom: 15px;"> Question goes here: </button>
+                </div>
+                <div class="answersRowHead">
+                    <div>
+                        <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow1"> Answer goes here </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow2"> Answer goes here </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow3"> Answer goes here </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow4"> Answer goes here </button>
+                    </div>
+                </div>
+                <div class="btn btn-default btn-danger" id="timerRow"> Time Left: 30 </div>
+                <div id="checkboxRow"> Checkbox appends here!</div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+    var questions = ["Q1", "Q2", "Q3", "Q4", "Q5"]
+    var correctResponse = ["A1", "A2", "A3", "A4", "A5"]
+    var wrongAnswer1 = ["B1", "B2", "B3", "B4", "B5"]
+    var wrongAnswer2 = ["C1", "C2", "C3", "C4", "C5"]
+    var wrongAnswer3 = ["D1", "D2", "D3", "D4", "D5"]
+    var randomANP = [1, 2, 3, 4]
+    var random1234 = Math.floor(Math.random() * randomANP.length)
+
+    var gameStart = $('#gameStart')
+    var timer = $("#timerRow")
+
+    var showQuestion;
+    var right = 0;
+    var wrong = 0;
+    var countdown = 10;
+
+
+
+    function displayTimer() {
+
+        timer.html("Time Left: " + countdown--);
+    }
+
+    function interval() {
+    	
+        setInterval(displayTimer, 1000);
+        showQuestion = setInterval(nextQuestion, 10000);
+
+
+    }
+
+    function resetTimer() {
+        if (countdown === 0) {
+            countdown = 10;
+            displayTimer();
+        }
+    }
+
+
+    function nextQuestion() {
+        countdown = 10;
+        var randomIndexNumber = Math.floor(Math.random() * questions.length)
+        $('.btn-primary').html(questions[randomIndexNumber]);
+
+        var random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+        $('#answersRow' + random1234).html(correctResponse[randomIndexNumber]).attr("value", "correct")
+        console.log(questions)
+
+        random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+        $('#answersRow' + random1234).html(wrongAnswer1[randomIndexNumber]).attr("value", "incorrect")
+        random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+        $('#answersRow' + random1234).html(wrongAnswer2[randomIndexNumber]).attr("value", "incorrect")
+        random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+        $('#answersRow' + random1234).html(wrongAnswer3[randomIndexNumber]).attr("value", "incorrect")
+        randomANP = [1, 2, 3, 4]
+
+        questions.splice([randomIndexNumber], 1)
+        correctResponse.splice([randomIndexNumber], 1)
+        wrongAnswer1.splice([randomIndexNumber], 1)
+        wrongAnswer2.splice([randomIndexNumber], 1)
+        wrongAnswer3.splice([randomIndexNumber], 1)
+        console.log(questions)
+
+
+
+        ///this isnt working!!!
+
+        $(".answersRow[value=correct]").on("click", function() {
+        	right++;
+            nextQuestion()
+            clearInterval(showQuestion)
+            showQuestion = setInterval(nextQuestion, 10000);
+            console.log("right++" + right++)
+       })
+                $(".answersRow[value=incorrect]").on("click", function() {
+        	wrong++;
+            nextQuestion()
+            clearInterval(showQuestion)
+            showQuestion = setInterval(nextQuestion, 10000);
+            console.log(wrong)
+       })
+    }
+
+//create end game function, put it in if else statement
+//array.length === 0
+		function endGame() {
+            	document.getElementByClass(".btn").disabled = true;
+            }
+        if (correctResponse.length === 0) {
+            endGame()
+
+        }
+
+
+    gameStart.on("click", function() {
+        interval();
+        resetTimer()
+        nextQuestion()
+
+    })
+
+     function endGame() {
+	$("#gameStart").attr('disabled', false);
+	alert("You got: " + right + "answers right and " + wrong + "wrong answers!")   }
+    if (correctResponse.length === 0) {
+        endGame()
+    }
+
+
+
+
+    //on click nextquestion function -- click functions typically go at the end
+    </script>
+    <!--
+	if (userClick === correctResponse){
+	append checkbox image to the bottom
+	function next question
+	}
+
+	else{
+	append x-box to the bottom
+	function next question
+
+
+	}
+
+
+
+
+
+-->
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Trivial Pursuit	</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body style="background-image:url(https://image.freepik.com/free-vector/abstract-blue-background_1048-1511.jpg)">
+
+<div class="container jumbotron">
+	<div class="row">
+		<div class="col-md-12">
+			<h1 style="text-align: center; margin-top: -15px;">MOVIE TRIVIA</h1>
+			<p style="text-align: center;"> <span class="btn btn-default btn-success" id ="gameStart"> Game Start! </span>
+			</p>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="container panel panel-body">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center">
+		<div id="questionRow"> 
+			<button type="button" class="btn btn-block btn-primary" style="pointer-events: none; padding: 25px; margin-bottom: 15px;"> Question goes here: </button> 
+		</div>
+			<div class="answersRow">
+				<div> <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow1"> Answer goes here </button> </div>
+				<div> <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow2"> Answer goes here </button> </div>
+				<div> <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow3"> Answer goes here </button> </div>
+				<div> <button type="button" class="btn btn-default btn-lg btn-block answersRow" id="answersRow4"> Answer goes here </button> </div>
+			</div>
+			<br>
+			<div class="btn btn-default btn-danger" id="timerRow"> Time Left: 15 </div>
+			<div><h3 id="rightwrong"> Right or wrong? </h3></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+ <script type="text/javascript">
+
+	var randomANP = [1, 2, 3, 4]
+	var random1234 = Math.floor(Math.random() * randomANP.length)
+	
+	var gameStart = $('#gameStart')
+	var timer = $("#timerRow")
+	var imageVisual = $('#checkboxRow')
+	var checkBoxImage = ("<img src='https://d30y9cdsu7xlg0.cloudfront.net/png/60247-200.png'/>")
+	var showQuestion;
+	var right = 0;
+	var wrong = 0;
+	var countdown = 15;
+
+
+				
+    //Timer function
+    var intervalId;
+
+  	function displayTimer() {
+        timer.html("Time Left: " + countdown--);
+    }
+
+
+	function interval() {
+        setInterval(displayTimer, 1000);
+        showQuestion = setInterval(nextQuestion, 15000);
+	}
+
+	function resetTimer() {
+      	countdown = 15;
+        displayTimer();
+    }
+
+		 var queryURL = "https://opentdb.com/api.php?amount=50&category=11&difficulty=medium&type=multiple";
+		 var movieObject;
+	 $.ajax({
+	  	url: queryURL,
+	  	method: "GET"
+	  	}).done(function (response) {
+	  		movieObject = response;
+	  		})
+
+	
+			function nextQuestion(){
+				for(var i = 0; i < 50; i++){
+				countdown = 15;
+				var randomIndexNumber = Math.floor(Math.random() * 50)
+				$('.btn-primary').html(movieObject.results[randomIndexNumber].question)
+
+					var random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+				  	$('#answersRow' + random1234).html(movieObject.results[randomIndexNumber].correct_answer).attr("value", "correct")
+
+				  	random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+					$('#answersRow' + random1234).html(movieObject.results[randomIndexNumber].incorrect_answers[0]).attr("value", "incorrect")
+					random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+				 	$('#answersRow' + random1234).html(movieObject.results[randomIndexNumber].incorrect_answers[1]).attr("value", "incorrect")
+				 	random1234 = randomANP.splice(Math.floor(Math.random() * randomANP.length), 1);
+				 	$('#answersRow' + random1234).html(movieObject.results[randomIndexNumber].incorrect_answers[2]).attr("value", "incorrect")
+	   				randomANP= [1,2,3,4]
+				}
+			}
+
+			gameStart.on("click", function(){
+				alert("Lets get ready to rumble!")
+				interval();
+				resetTimer()
+				nextQuestion()
+
+			$(".answersRow[value=correct]").on("click", function() {
+	        	right++;
+	        	nextQuestion()
+	            clearInterval(showQuestion)
+	            showQuestion = setInterval(nextQuestion, 15000);
+			})
+
+            $(".answersRow[value=incorrect]").on("click", function() {
+        	wrong++;
+        	nextQuestion()
+            clearInterval(showQuestion)
+            showQuestion = setInterval(nextQuestion, 15000);
+            console.log(wrong)
+       })
+})			
+
+//This shit isnt working and Im losing my mindddddddddddddddd
+
+        if (right + wrong === 10) {
+            endGame()
+        }
+
+        		function endGame() {
+            	document.getElementByClass(".btn").disabled = true;
+            	alert("You got: " + right + "answers right and " + wrong + "wrong answers!")
+        } 
+
+</script>
+
+
+</body>
+</html>
+
+
